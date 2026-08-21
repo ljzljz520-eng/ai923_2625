@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "metrics": {
+    "production_loc": 2318,
+    "production_files": 42,
+    "production_packages": 9,
+    "test_files": 10,
+    "production_functions": 237,
+    "decision_points": 303
+  },
+  "persistence": {
+    "module": "go.etcd.io/bbolt",
+    "entities": [
+      "CaseRecord",
+      "ClientProfile",
+      "ReviewRecord",
+      "ArchiveEntry"
+    ],
+    "reopen_test": "TestPersistenceSurvivesReopen"
+  },
+  "workflows": [
+    {
+      "steps": [
+        "create a draft case",
+        "submit complete case",
+        "record review decision",
+        "archive reviewed case"
+      ],
+      "test": "TestWorkflow30BusinessInvariant"
+    },
+    {
+      "steps": [
+        "filter cases by query",
+        "load persisted cases",
+        "summarize status counts",
+        "serve report JSON"
+      ],
+      "test": "TestWorkflowSearchAndReport"
+    },
+    {
+      "steps": [
+        "submit case for review",
+        "request optional scorer",
+        "return disabled status",
+        "continue review flow"
+      ],
+      "test": "TestOptionalScoringDisabledMessage"
+    }
+  ]
+}
