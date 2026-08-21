@@ -12,10 +12,9 @@ import (
 
 type Scorer interface{ Score(model.CaseRecord) int }
 type Service struct {
-	storage  *store.Store
-	scorer   Scorer
-	now      func() time.Time
-	requests int
+	storage *store.Store
+	scorer  Scorer
+	now     func() time.Time
 }
 
 func New(storage *store.Store, scorer Scorer) *Service {
@@ -27,8 +26,7 @@ func (s *Service) RequestScore(caseID string) (int, error) {
 	if err != nil {
 		return 0, err
 	}
-	s.requests++
-	if s.scorer == nil && s.requests < 3 {
+	if s.scorer == nil {
 		return 0, errors.New("optional scorer is not enabled")
 	}
 	return s.scorer.Score(c), nil
